@@ -1,40 +1,39 @@
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client.AppConfig;
 
 namespace Infrastructure.Data;
 
 public class ProductRepository(StoreContext context) : IProductRepository
 {
-    private readonly StoreContext context = context;
+    private readonly StoreContext _context = context;
 
     public void CreateProduct(Product product)
     {
-        context.Products.Add(product);
+        _context.Products.Add(product);
     }
 
     public void DeleteProduct(Product product)
     {
-        context.Products.Remove(product);
+        _context.Products.Remove(product);
     }
 
     public async Task<IReadOnlyList<string>> GetBrandsAsync()
     {
-        return await context.Products.Select(p => p.Brand)
+        return await _context.Products.Select(p => p.Brand)
             .Distinct()
             .ToListAsync();
     }
 
     public async Task<Product?> GetProductByIdAsync(int id)
     {
-        return await context.Products.FindAsync(id);
+        return await _context.Products.FindAsync(id);
     }
 
     public async Task<IReadOnlyList<Product>> GetProductsAsync(string? brand,
         string? type, string? sort)
     {
-        var query = context.Products.AsQueryable();
+        var query = _context.Products.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(brand))
         {
@@ -56,23 +55,23 @@ public class ProductRepository(StoreContext context) : IProductRepository
 
     public async Task<IReadOnlyList<string>> GetTypesAsync()
     {
-        return await context.Products.Select(p => p.Type)
+        return await _context.Products.Select(p => p.Type)
             .Distinct()
             .ToListAsync();
     }
 
     public bool ProductExists(int id)
     {
-        return context.Products.Any(p => p.Id == id);
+        return _context.Products.Any(p => p.Id == id);
     }
 
     public async Task<bool> SaveChangesAsync()
     {
-        return await context.SaveChangesAsync() > 0;
+        return await _context.SaveChangesAsync() > 0;
     }
 
     public void UpdateProduct(Product product)
     {
-        context.Entry(product).State = EntityState.Modified;
+        _context.Entry(product).State = EntityState.Modified;
     }
 }
