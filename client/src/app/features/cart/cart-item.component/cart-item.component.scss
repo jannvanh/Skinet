@@ -1,0 +1,22 @@
+// Override Material icon colors
+.mat-icon.text-red-600 {
+  color: rgb(220 38 38) !important; // Tailwind's red-600
+}
+
+.mat-icon.text-green-600 {
+  color: rgb(22 163 74) !important; // Tailwind's green-600
+}
+
+// Alternative approach using CSS custom properties
+:host {
+  --remove-button-color: rgb(220 38 38);
+  --add-button-color: rgb(22 163 74);
+}
+
+.remove-icon {
+  color: var(--remove-button-color) !important;
+}
+
+.add-icon {
+  color: var(--add-button-color) !important;
+}

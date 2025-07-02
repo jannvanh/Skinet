@@ -6,4 +6,5 @@ export type Product = {
     pictureUrl: string;
     type: string;
     quantityInStock: number;
+    brand: string;
 }
